@@ -4,6 +4,8 @@ import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 
+import * as firebase from 'firebase/app';
+
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -20,10 +22,26 @@ export class AppComponent {
   }
 
   initializeApp() {
+    firebase.initializeApp({
+      apiKey: "AIzaSyDPzNdohB7x4BcGrYXZHmI_Mbcn9nXMN3Y",
+      authDomain: "audimos.firebaseapp.com",
+      databaseURL: "https://audimos.firebaseio.com",
+      projectId: "audimos",
+      storageBucket: "audimos.appspot.com",
+      messagingSenderId: "127856835600",
+      appId: "1:127856835600:web:bc3a3c9edeefbbc912de95",
+      measurementId: "G-KGW65FTWX7"
+    });
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
       this.router.navigateByUrl('authentication');
     });
+  }
+
+  logout()
+  {
+    firebase.auth().signOut();
+    this.router.navigateByUrl('authentication');
   }
 }

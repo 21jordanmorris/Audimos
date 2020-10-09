@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ModalController, ToastController } from '@ionic/angular';
+import { UserService } from '../services/user.service';
+import { LoginPage } from '../login/login.page';
 
 @Component({
   selector: 'app-signup',
@@ -8,14 +10,11 @@ import { ModalController, ToastController } from '@ionic/angular';
   styleUrls: ['./signup.page.scss'],
 })
 export class SignupPage implements OnInit {
-  private fname: string;
-  private lname: string;
-  private email: string;
-  private password: string;
-  private cpassword: string;
+  account = {fname: '', lname: '', email: '', password: '', cpassword: ''};
 
-  constructor(public modalController: ModalController,
-              public toastController: ToastController,
+  constructor(private userService: UserService,
+              private modalController: ModalController,
+              private toastController: ToastController,
               private router: Router) { }
 
   ngOnInit() {}
@@ -25,31 +24,39 @@ export class SignupPage implements OnInit {
     this.modalController.dismiss();
   }
 
-  verifyAndRoute()
+  async verifyAndRoute()
   {
-    if (this.fname == null || this.fname == "" ||
-        this.lname == null || this.lname == "" ||
-        this.email == null || this.email == "" ||
-        this.password == null || this.password == "" ||
-        this.cpassword == null || this.cpassword == "")
-      this.presentToast("Not all fields are completed.");
-    else if (this.password != this.cpassword)
-      this.presentToast("Passwords do not match.");
-    // else if (this.email already exists)
-    //  this.presentToast("An account with that email already exists.");
+    if (this.account.fname == '' || this.account.lname == '' || this.account.email == '' ||
+        this.account.password == '' || this.account.cpassword == '')
+      this.presentToastError("Not all fields are completed.");
+    else if (this.account.password != this.account.cpassword)
+      this.presentToastError("Passwords do not match.");
     else
     {
-      this.password = "";
-      this.cpassword = "";
-      this.dismiss();
-      this.router.navigateByUrl('');
+      this.userService.signup(this.account.password, this.account.lname, this.account.email, this.account.password).then(data => {
+        this.dismiss();
+        this.router.navigateByUrl('');
+        this.userService.loggedIn = true;
+      }).catch(error => {
+        this.presentToastError(error.message);
+      });
     }
   }
 
-  async presentToast(msg: string)
+  async presentToastError(msg)
   {
     const toast = await this.toastController.create({
       header: "Error",
+      message: msg,
+      position: "top",
+      duration: 5000,
+    });
+    toast.present();
+  }
+
+  async presentToast(msg)
+  {
+    const toast = await this.toastController.create({
       message: msg,
       position: "top",
       duration: 5000,

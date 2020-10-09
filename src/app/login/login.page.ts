@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ModalController, ToastController } from '@ionic/angular';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-login',
@@ -9,11 +10,11 @@ import { ModalController, ToastController } from '@ionic/angular';
 })
 export class LoginPage implements OnInit 
 {
-  private email: string;
-  private password: string;
+  account = { email: '', password: ''}
 
   constructor(public modalController: ModalController,
               public toastController: ToastController,
+              private userService: UserService,
               private router: Router) { }
 
   ngOnInit() {}
@@ -25,21 +26,36 @@ export class LoginPage implements OnInit
 
   verifyAndRoute()
   {
-    if (this.email == "" || this.email == null || this.password == "" || this.password == null)
-      this.presentToast();
+    if (this.account.email == "" || this.account.password == "")
+      this.presentToastPWError("Invalid email or password. Did you forget your password?");
     else
     {
-      this.password = "";
-      this.dismiss();
-      this.router.navigateByUrl('');
+      this.userService.login(this.account.email, this.account.password).then(data => {
+        this.dismiss();
+        this.router.navigateByUrl('');
+        this.userService.loggedIn = true;
+      }).catch(error => {
+        this.presentToastError(error.message);
+      })
     }
   }
 
-  async presentToast()
+  async presentToastError(message)
   {
     const toast = await this.toastController.create({
       header: "Error",
-      message: "Invalid email or password. Did you forget your password?",
+      message: message,
+      position: "top",
+      duration: 5000,
+    });
+    toast.present();
+  }
+
+  async presentToastPWError(message)
+  {
+    const toast = await this.toastController.create({
+      header: "Error",
+      message: message,
       position: "top",
       duration: 10000,
       buttons: [
@@ -51,7 +67,7 @@ export class LoginPage implements OnInit
         }, {
           text: "No",
           handler: () => {
-            this.password = "";
+            this.account.password = "";
           }
         }
       ]
