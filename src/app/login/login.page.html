@@ -1,0 +1,37 @@
+<ion-content>
+    <ion-icon name="close-outline" class="dismiss-button" style="zoom:2.0;" (click)="dismiss()"></ion-icon>
+    <div class="card">
+      <ion-card button="true">
+        <ion-card-header>
+          <ion-card-title>Login</ion-card-title>
+        </ion-card-header>
+      </ion-card>
+      <ion-card>
+        <!-- <img src="././assets/card-image.jpg"/> -->
+        <ion-card-header>
+          <ion-card-subtitle>Input Credentials</ion-card-subtitle>
+          <ion-card-title>Audimos</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-grid>
+            <ion-row>
+              <ion-col>
+                <ion-input [(ngModel)]="email" placeholder="Email" type="email"></ion-input>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col>
+                <ion-input [(ngModel)]="password" placeholder="Password" type="password"></ion-input>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-card-content>
+      </ion-card>
+      <ion-fab>
+        <ion-fab-button class="login-button" (click)="verifyAndRoute()">
+          <ion-icon class="arrow-icon" name="arrow-forward"></ion-icon>
+        </ion-fab-button>
+      </ion-fab>
+    </div>
+    <!-- <a href="" class="fp-link">Forgot Password?</a> -->
+</ion-content>
