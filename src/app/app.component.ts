@@ -5,6 +5,7 @@ import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import * as firebase from 'firebase/app';
+import { UserService } from './services/user.service';
 
 @Component({
   selector: 'app-root',
@@ -16,7 +17,7 @@ export class AppComponent {
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
-    private router: Router
+    private router: Router,
   ) {
     this.initializeApp();
   }
@@ -35,8 +36,20 @@ export class AppComponent {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
-      this.router.navigateByUrl('authentication');
+      this.checkIfAuthenticated(new UserService(this.router));
     });
+  }
+
+  checkIfAuthenticated(userService: UserService)
+  {
+    if(userService.loggedIn)
+    {
+      // FaceID, TouchID, Passcode
+    }
+    else
+    {
+      this.router.navigateByUrl('authentication');
+    }
   }
 
   logout()

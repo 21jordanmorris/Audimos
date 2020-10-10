@@ -11,19 +11,7 @@ export class UserService
 {
   public loggedIn = false;
 
-  constructor(private router: Router) 
-  { 
-    firebase.auth().onAuthStateChanged((user: firebase.User) => {
-      if (user)
-      {
-        // face id, touch id, etc.
-      }
-      else
-      {
-        this.router.navigateByUrl('authentication');
-      }
-    });
-  }
+  constructor(private router: Router) {}
 
   signup(fname, lname, email, password)
   {
@@ -43,6 +31,7 @@ export class UserService
 
   logOut()
   {
+    this.loggedIn = false;
     return firebase.auth().signOut();
   }
 
