@@ -33,7 +33,7 @@ export class LoginPage implements OnInit
       this.userService.login(this.account.email, this.account.password).then(data => {
         this.dismiss();
         this.router.navigateByUrl('');
-        this.userService.loggedIn = true;
+        this.userService.setLoggedInStatus(true);
       }).catch(error => {
         this.presentToastError(error.message);
       })

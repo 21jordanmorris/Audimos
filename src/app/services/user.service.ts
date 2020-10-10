@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { Storage } from '@ionic/storage';
 
 import * as firebase from 'firebase';
 
@@ -9,9 +10,15 @@ import * as firebase from 'firebase';
 })
 export class UserService 
 {
-  public loggedIn = false;
+  loggedIn = false;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private storage: Storage) {}
+
+  setLoggedInStatus(loggedInStatus)
+  {
+    this.storage.set('loggedInStatus', loggedInStatus);
+    this.loggedIn = loggedInStatus;
+  }
 
   signup(fname, lname, email, password)
   {
@@ -31,8 +38,10 @@ export class UserService
 
   logOut()
   {
-    this.loggedIn = false;
-    return firebase.auth().signOut();
+    firebase.auth().signOut().then(() => {
+      this.setLoggedInStatus(false);
+      this.router.navigateByUrl('authentication');
+    });
   }
 
   currentUser()
