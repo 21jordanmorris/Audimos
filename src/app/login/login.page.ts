@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ModalController, ToastController } from '@ionic/angular';
 import { UserService } from '../services/user.service';
+import { ResetPasswordPage } from '../reset-password/reset-password.page';
 
 @Component({
   selector: 'app-login',
@@ -13,6 +14,7 @@ export class LoginPage implements OnInit
   account = { email: '', password: ''}
 
   constructor(public modalController: ModalController,
+              private _modalController: ModalController,
               public toastController: ToastController,
               private userService: UserService,
               private router: Router) { }
@@ -27,7 +29,7 @@ export class LoginPage implements OnInit
   verifyAndRoute()
   {
     if (this.account.email == "" || this.account.password == "")
-      this.presentToastPWError("Invalid email or password. Did you forget your password?");
+      this.presentToastPWError("One or more fields are incomplete.");
     else
     {
       this.userService.login(this.account.email, this.account.password).then(data => {
@@ -35,7 +37,14 @@ export class LoginPage implements OnInit
         this.router.navigateByUrl('');
         this.userService.setLoggedInStatus(true);
       }).catch(error => {
-        this.presentToastError(error.message);
+        if (error.code = "auth/wrong-password")
+        {
+          this.presentToastPWError("Invalid email or password. Did you forget your password?");
+        }
+        else 
+        {
+          this.presentToastError(error.message);
+        }
       })
     }
   }
@@ -61,8 +70,11 @@ export class LoginPage implements OnInit
       buttons: [
         {
           text: "Yes",
-          handler: () => {
-            console.log("Prompt forgot password page.");
+          handler: async () => {
+            const modal = this._modalController.create({
+              component: ResetPasswordPage
+            });
+            return (await modal).present();
           }
         }, {
           text: "No",
