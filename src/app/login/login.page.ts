@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { ModalController, ToastController } from '@ionic/angular';
 import { UserService } from '../services/user.service';
 import { ResetPasswordPage } from '../reset-password/reset-password.page';
+import { Storage } from '@ionic/storage';
 
 @Component({
   selector: 'app-login',
@@ -17,9 +18,18 @@ export class LoginPage implements OnInit
               private _modalController: ModalController,
               public toastController: ToastController,
               private userService: UserService,
-              private router: Router) { }
+              private router: Router,
+              private storage: Storage) { }
 
-  ngOnInit() {}
+  async ngOnInit() 
+  {
+    await this.storage.get('email').then(val => {
+      if (val != null)
+      {
+        this.account.email = val;
+      }
+    })
+  }
 
   dismiss()
   {
@@ -35,6 +45,7 @@ export class LoginPage implements OnInit
       this.userService.login(this.account.email, this.account.password).then(data => {
         this.dismiss();
         this.router.navigateByUrl('');
+        this.userService.setEmailStorage(this.account.email);
         this.userService.setLoggedInStatus(true);
       }).catch(error => {
         if (error.code = "auth/wrong-password")

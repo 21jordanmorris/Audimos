@@ -36,6 +36,7 @@ export class SignupPage implements OnInit {
       this.userService.signup(this.account.password, this.account.lname, this.account.email, this.account.password).then(data => {
         this.dismiss();
         this.router.navigateByUrl('');
+        this.userService.setEmailStorage(this.account.email);
         this.userService.setLoggedInStatus(true);
       }).catch(error => {
         this.presentToastError(error.message);

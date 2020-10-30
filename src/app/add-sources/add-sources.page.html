@@ -1,0 +1,16 @@
+<ion-content>
+  <ion-grid class="ion-margin">
+    <ion-row>
+      <ion-col>
+        <div class="button-div" *ngFor="let item of newsService.newsSources" (click)="sourceClicked(item)">
+          <ion-button color="light" shape="round" [fill]="isChosenAlready(item) ? 'solid': 'outline'" >{{ item }}</ion-button>
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-button class="done-button" color="light" expand="block" shape="round" (click)="dismiss()">Done</ion-button>
+      </ion-col>    
+    </ion-row>
+  </ion-grid>
+</ion-content>

@@ -1,0 +1,47 @@
+<ion-header *ngIf="hasSources">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="addSourcesModal()">
+        <ion-icon name="add-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>News</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="scrollToTop()">
+        <ion-icon name="chevron-up-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="hasSources">
+    <ion-card class="welcome-card" *ngFor="let item of newsService.newsReports" (click)="cardClicked(item)">
+      <img src="{{ item.urlToImage }}" alt="" />
+      <ion-card-header>
+        <ion-card-subtitle>{{ item.source.name }}</ion-card-subtitle>
+        <ion-card-title>{{ item.title }}</ion-card-title>
+      </ion-card-header>
+    </ion-card>
+</ion-content>
+
+<ion-content *ngIf="!hasSources" class="no-sources-content">
+  <ion-grid class="ion-margin">
+    <ion-row>
+      <ion-col>
+        <ion-icon class="no-sources-icon" name="alert-circle-outline"></ion-icon>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <p class="no-sources-message">
+          Uh-oh! It looks like you haven't added any news sources yet.
+        </p>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-button class="no-sources-button" expand="block" shape="round" (click)="addSourcesModal()">Add Sources</ion-button>
+      </ion-col>    
+    </ion-row>
+  </ion-grid>
+</ion-content>

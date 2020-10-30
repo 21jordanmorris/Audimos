@@ -11,6 +11,7 @@ import * as firebase from 'firebase';
 export class UserService 
 {
   loggedIn = false;
+  accountEmail = '';
 
   constructor(private router: Router, private storage: Storage) {}
 
@@ -18,6 +19,12 @@ export class UserService
   {
     this.storage.set('loggedInStatus', loggedInStatus);
     this.loggedIn = loggedInStatus;
+  }
+
+  setEmailStorage(email)
+  {
+    this.storage.set('email', email);
+    this.accountEmail = email;
   }
 
   signup(fname, lname, email, password)

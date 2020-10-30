@@ -1,0 +1,23 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap');
+
+ionic-content {
+    margin-top: 35px;
+}
+
+.no-sources-icon {
+    font-size: 10em;
+    color: var(--ion-color-primary);
+}
+
+.no-sources-content {
+    max-width: 500px;
+    text-align: center;
+    align-self: center;
+    position: absolute;
+    top: 22vh;
+}
+
+.no-sources-message {
+    font-size: 1.5em;
+    font-family: 'Montserrat';
+}
