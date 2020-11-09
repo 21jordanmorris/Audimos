@@ -29,6 +29,10 @@ export class NewsPage implements OnInit {
       }
     });
     this.hasSources = (this.newsService.chosenNewsSources.length == 0) ? false : true;
+    if (this.hasSources)
+    {
+      this.newsService.fetchNews().subscribe();
+    }
   }
 
   scrollToTop()
@@ -43,12 +47,16 @@ export class NewsPage implements OnInit {
 
   async addSourcesModal() 
   {
+    var oldChosen = this.newsService.chosenNewsSources;
+    console.log(oldChosen);
     const modal = await this.modalController.create({
       component: AddSourcesPage,
     });
     modal.onDidDismiss().then(() => {
-      this.ngOnInit();
-      this.newsService.fetchNews().subscribe();
+      if (JSON.stringify(oldChosen) != JSON.stringify(this.newsService.chosenNewsSources))
+      {
+        this.ngOnInit();
+      }
     });
     return await modal.present();
   }

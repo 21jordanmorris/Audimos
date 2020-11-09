@@ -7,7 +7,10 @@ import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { TouchID } from '@ionic-native/touch-id/ngx';
 import { IonicStorageModule } from '@ionic/storage';
+
+// Spotify
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
+import { SpotifyAuth } from '@ionic-native/spotify-auth/ngx';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -20,10 +23,11 @@ import { HttpClientModule } from '@angular/common/http';
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, IonicStorageModule.forRoot(),
             HttpClientModule],
   providers: [
+    InAppBrowser,
     StatusBar,
     SplashScreen,
     TouchID,
-    InAppBrowser,
+    SpotifyAuth,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

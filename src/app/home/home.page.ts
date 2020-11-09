@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { SpotifyAuth } from '@ionic-native/spotify-auth/ngx';
 
 @Component({
   selector: 'app-home',
@@ -8,25 +8,31 @@ import { ModalController } from '@ionic/angular';
 })
 export class HomePage implements OnInit {
 
-  client_id = 'f7280625863a4986af8bf14c2bd2eccf';
-  client_secret = '';
-  redirectUrl = 'http://localhost:8100/authentication';
-  scopes = ["streaming"];
+  access_token : string;
+  expiresAt : number;
 
-  constructor(private modalController: ModalController) { }
+  constructor(private spotifyAuth: SpotifyAuth) { }
   
-  config = {
-    clientId: "f7280625863a4986af8bf14c2bd2eccf",
-    redirectUrl: "http://localhost:8100/authentication",
-    scopes: ["streaming"] // see Spotify Dev console for all scopes
-  }
-
-
-  async ngOnInit() {}
+  ngOnInit() {}
 
   hostSpotify()
   {
-    alert("Implement");
+    const config = {
+      clientId: "f7280625863a4986af8bf14c2bd2eccf",
+      redirectUrl: "audimos://callback",
+      scopes: ["streaming"], // see Spotify Dev console for all scopes
+      tokenExchangeUrl: "https://audimos-spotify-server.herokuapp.com/exchange",
+      tokenRefreshUrl: "https://audimos-spotify-server.herokuapp.com/refresh",
+    };
+
+    this.spotifyAuth.authorize(config)
+      .then(({ accessToken, expiresAt }) => {
+        this.access_token = accessToken;
+        this.expiresAt = expiresAt;
+
+        alert(accessToken);
+        alert(expiresAt);
+      });
   }
 
 }

@@ -32,21 +32,24 @@ export class NewsService {
   {
     console.log("fetching news");
 
+    let url = "https://newsapi.org/v2/everything?" +
+              "domains=" + this.chosenNewsSources.join() + "&" +
+              "apiKey=a1fb48da04b34c8b8ee38cdeeced4af8";
+              
+    return this.http.get(url).pipe(tap(response => {
+      console.log(response);
+      this.newsReports = response['articles'];
+    }))
+  }
+
+  getToday()
+  {
     var today = new Date();
     var dd = String(today.getDate()).padStart(2, '0');
     var mm = String(today.getMonth() + 1).padStart(2,'0');
     var yyyy = today.getFullYear();
 
-    var sToday = yyyy + "-" + mm + "-" + dd; 
-
-    let url = "https://newsapi.org/v2/everything?" +
-              "domains=" + this.chosenNewsSources.join() + "&" +
-              "from=" + sToday + "&" +
-              "apiKey=a1fb48da04b34c8b8ee38cdeeced4af8";
-    return this.http.get(url).pipe(tap(response => {
-      console.log(response);
-      this.newsReports = response['articles'];
-    }))
+    return yyyy + "-" + mm + "-" + dd; 
   }
 
   setChosenNewsSources(chosenNewsSources)
