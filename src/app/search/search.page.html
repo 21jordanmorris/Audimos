@@ -1,0 +1,18 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-searchbar showCancelButton="never" searchIcon="search" placeholder="Search for a track" (ionChange)="search($event.target.value)"></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="search-content">
+    <ion-icon *ngIf="lastfmResults.length == 0" name="pulse-outline" class="no-search-results"></ion-icon>
+
+    <ion-card button (click)="findSimilarModal(item.name, item.artist)" class="trackCard" style="border-radius: 25px;" mode="ios" *ngFor="let item of lastfmResults">
+      <ion-card-header>
+        <ion-card-subtitle>{{item.artist}}</ion-card-subtitle>
+        <ion-card-title>{{item.name}}</ion-card-title>
+      </ion-card-header>
+    </ion-card>
+  </div>
+</ion-content>

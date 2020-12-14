@@ -9,7 +9,7 @@ import { NewsService } from '../services/news.service';
 })
 export class AddSourcesPage implements OnInit {
 
-  constructor(private newsService: NewsService,
+  constructor(public newsService: NewsService,
               public modalController: ModalController) { }
 
   ngOnInit() 

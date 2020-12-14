@@ -8,6 +8,7 @@ import { Storage } from '@ionic/storage';
 })
 export class NewsService {
   public newsReports = [];
+  public jsonObject: any;
 
   public newsSources = [
     "billboard.com", 
@@ -34,22 +35,22 @@ export class NewsService {
 
     let url = "https://newsapi.org/v2/everything?" +
               "domains=" + this.chosenNewsSources.join() + "&" +
-              "apiKey=a1fb48da04b34c8b8ee38cdeeced4af8";
+              "apiKey=e1ebc834021a4d1b9b6e7995323a2f10";
+
+    //url = "https://newsapi.org/v2/top-headlines?q=music&apiKey=e1ebc834021a4d1b9b6e7995323a2f10"
+
+    console.log(url);
               
-    return this.http.get(url).pipe(tap(response => {
-      console.log(response);
-      this.newsReports = response['articles'];
-    }))
-  }
-
-  getToday()
-  {
-    var today = new Date();
-    var dd = String(today.getDate()).padStart(2, '0');
-    var mm = String(today.getMonth() + 1).padStart(2,'0');
-    var yyyy = today.getFullYear();
-
-    return yyyy + "-" + mm + "-" + dd; 
+    return this.http.get(url).pipe(tap(
+      response => {
+        console.log("NEWS API RESPONSE: " + response);
+        this.newsReports = response['articles'];
+      },
+      error => {
+        this.jsonObject = JSON.parse(error);
+        console.log("Error: " + this.jsonObject);
+      }
+    ))
   }
 
   setChosenNewsSources(chosenNewsSources)

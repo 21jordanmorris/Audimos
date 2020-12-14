@@ -1,0 +1,51 @@
+<ion-content>
+  <ion-icon name="close-outline" class="dismiss-button" style="zoom:2.0;" (click)="dismiss()"></ion-icon>
+
+  <div *ngIf="hasSimilar == 1" class="track-content">
+    <div class="card">
+      <ion-card class="main-card" button="true">
+        <ion-card-header>
+          <ion-card-title>Similar Tracks To:</ion-card-title>
+          <ion-card-title>{{track}}</ion-card-title>
+        </ion-card-header>
+      </ion-card>
+
+      <ion-grid>
+        <ion-card button *ngFor="let item of similarTracks">
+          <ion-card-header>
+            <ion-card-subtitle>{{item.artist.name}}</ion-card-subtitle>
+            <ion-card-title *ngIf="item.match >= .85">
+              {{item.name}} 
+              <ion-icon name="cellular-outline" *ngIf="item.match >= .85" class="green-match"></ion-icon>
+            </ion-card-title>
+            <ion-card-title *ngIf="item.match >= .60 && item.match < .85">
+              {{item.name}}
+              <ion-icon name="cellular-outline" *ngIf="item.match >= .45 && item.match < .85" class="yellow-match"></ion-icon>
+            </ion-card-title>
+            <ion-card-title *ngIf="item.match < .45">
+              {{item.name}}
+              <ion-icon name="cellular-outline" *ngIf="item.match < .60" class="red-match"></ion-icon>
+            </ion-card-title>
+          </ion-card-header>
+        </ion-card>
+      </ion-grid>
+    </div>
+  </div>
+
+ <div *ngIf="hasSimilar == 0" class="no-track-content">  
+    <ion-grid class="ion-margin">
+      <ion-row>
+        <ion-col>
+          <ion-icon class="no-track-icon" name="alert-circle-outline"></ion-icon>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <p class="no-track-message">
+            Uh-oh! It looks like we're having trouble finding tracks similar to this one.
+          </p>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+</ion-content>

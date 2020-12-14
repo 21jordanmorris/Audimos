@@ -23,16 +23,20 @@ const routes: Routes = [
     loadChildren: () => import('./reset-password/reset-password.module').then( m => m.ResetPasswordPageModule)
   },
   {
-    path: 'home',
-    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
-  },
-  {
     path: 'news',
     loadChildren: () => import('./news/news.module').then( m => m.NewsPageModule)
   },
   {
     path: 'add-sources',
     loadChildren: () => import('./add-sources/add-sources.module').then( m => m.AddSourcesPageModule)
+  },
+  {
+    path: 'search',
+    loadChildren: () => import('./search/search.module').then( m => m.SearchPageModule)
+  },
+  {
+    path: 'track-similar',
+    loadChildren: () => import('./track-similar/track-similar.module').then( m => m.TrackSimilarPageModule)
   }
 ];
 @NgModule({
